@@ -17,3 +17,8 @@ symfony server:start
  [OK] Web server listening                                                                                              
       The Web server is using PHP CLI 7.4.3                                                                             
       https://127.0.0.1:8000   
+
+Recursos del API en:
+
+https://localhost:8000/api
+
