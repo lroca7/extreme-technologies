@@ -24,6 +24,7 @@ use Twig\Extra\Intl\IntlExtension;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
 class ComplaintController extends AbstractController
 {
@@ -275,6 +276,50 @@ class ComplaintController extends AbstractController
 
         // Crear archivo temporal en el sistema
         $fileName = 'excel_complaints.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        
+        // Guardar el archivo de excel en el directorio temporal del sistema
+        $writer->save($temp_file);
+        
+        // Retornar excel como descarga
+        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+    }
+
+    /**
+    * @Route("/complaints/csv", name="api_complaints_csv")
+    */
+    public function reportCsv()
+    {
+        $spreadsheet = new Spreadsheet();
+        
+        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Código');
+        $sheet->setCellValue('B1', 'Tipo');
+        $sheet->setCellValue('C1', 'Asunto');
+        $sheet->setCellValue('D1', 'Usuario');
+
+        $sheet->setTitle("Complaints");
+        
+        // Crear tu archivo Office 2007 Excel (XLSX Formato)
+        $writer = new Csv($spreadsheet);
+        
+        $complaints = $this->list(true);
+
+
+        $cell = 3;
+        foreach ($complaints as $key => $complaint) {
+            
+            $sheet->setCellValue('A'.$cell, $complaint['id']);
+            $sheet->setCellValue('B'.$cell, $complaint['type']['name']);
+            $sheet->setCellValue('C'.$cell, $complaint['subject']);
+            $sheet->setCellValue('D'.$cell, $complaint['user']['email']);
+
+            $cell++;
+        }
+
+        // Crear archivo temporal en el sistema
+        $fileName = 'excel_complaints.csv';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
         
         // Guardar el archivo de excel en el directorio temporal del sistema
