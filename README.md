@@ -22,5 +22,7 @@ symfony server:start
 
    https://localhost:8000/api
    
+5) Cargar Datos de Prueba
 
+   sudo bin/console doctrine:fixture:load
 
