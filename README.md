@@ -12,9 +12,9 @@ Prueba - Desarrollador PHP
 
 3) Ejecutar servidor local
 
-symfony server:start
+   symfony server:start
 
- [OK] Web server listening                                                                                              
+   [OK] Web server listening                                                                                              
       The Web server is using PHP CLI 7.4.3                                                                             
       https://127.0.0.1:8000   
 
