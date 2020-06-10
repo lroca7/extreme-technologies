@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
-
+use App\Entity\ComplaintType;
 
 class AppFixtures extends Fixture
 {
@@ -25,6 +25,7 @@ class AppFixtures extends Fixture
         // $manager->persist($product);
 
         $this->loadUser($manager);
+        $this->loadComplaintType($manager);
     }
 
 
@@ -45,6 +46,27 @@ class AppFixtures extends Fixture
         $user2->setPassword($password2);
 
         $manager->persist($user2);
+
+
+        $manager->flush();
+    }
+
+    public function loadComplaintType($manager)
+    {
+        $complaintType1 = new ComplaintType();
+        $complaintType1->setName('Petición');
+
+        $manager->persist($complaintType1);
+
+        $complaintType2 = new ComplaintType();
+        $complaintType2->setName('Reclamo');
+
+        $manager->persist($complaintType2);
+
+        $complaintType3 = new ComplaintType();
+        $complaintType3->setName('Cambio');
+
+        $manager->persist($complaintType3);
 
 
         $manager->flush();
