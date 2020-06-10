@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Factura de venta!{% endblock %}
+
+{% block body %}
+<style>
+
+    @font-face {
+        font-family: "source_sans_proregular";           
+        src: local("Source Sans Pro"), url("fonts/sourcesans/sourcesanspro-regular-webfont.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+    }        
+
+    .example-wrapper { 
+        margin: 1em auto; 
+        max-width: 800px; width: 95%; 
+        font: 18px/1.5 sans-serif; 
+        font-family: "source_sans_proregular", Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif !important;
+    }
+    .example-wrapper code { 
+        background: #F5F5F5; 
+        padding: 2px 6px; 
+    }
+
+    .company-wrapper p{
+        margin: 0 0 8px 0 !important;
+    }
+    .complaint table{
+        width: 100%;
+    }
+    .table{
+        
+    }
+    .table__header{
+        
+    }
+    .t1{
+        text-align: left;
+        width: 100px;
+    }
+    .t2{        
+        
+         width: 150px;
+    }
+    .t3{
+        
+        width: 200px;
+    }
+    .t4{
+        
+        width: 150px;
+    }
+
+</style>
+
+<div class="example-wrapper">
+    
+    <div class="detail-wrapper">
+        <b>Peticiones y reclamos</b>
+    </div>
+    <br/><br/>
+    <div class="complaint-wrapper">
+        <table>
+                <tr class="table__header">
+                    <th class="t1">Código</th>
+                    <th class="t2">Tipo</th>
+                    <th class="t3">Asunto</th>
+                    <th class="t4">Usuario</th> #}
+                </tr>
+                {% for complaint in complaints %}
+                     <tr>
+                        <td class="t1">{{ complaint.id|e }}</td>
+                        <td class="t2">{{ complaint.type.name|e }}</td>
+                        <td class="t3">{{ complaint.subject}}</td>
+                        <td class="t4">{{ complaint.user.email }}</td>
+                        
+                    </tr>
+                {% endfor %}    
+        </table>
+    </div>
+
+    
+</div>
+{% endblock %}

@@ -16,6 +16,11 @@ use App\Entity\User;
 use App\Entity\ComplaintType;
 use App\Entity\Photo;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+use Twig\Extra\Intl\IntlExtension;
+
 class ComplaintController extends AbstractController
 {
     public function __construct(UserPasswordEncoderInterface $encoder)
@@ -121,7 +126,7 @@ class ComplaintController extends AbstractController
     /**
      * @Route("/api/complaints", name="api_complaints_list")
      */
-    public function list()
+    public function list($return_array = false)
     {
         $em = $this->getDoctrine()->getManager();
        
@@ -147,6 +152,10 @@ class ComplaintController extends AbstractController
                         'name' => $complaint->getType()->getName()
                     ]
                 );
+        }
+
+        if($return_array){
+            return $complaints_data;
         }
 
         return new JsonResponse($complaints_data);
@@ -185,12 +194,45 @@ class ComplaintController extends AbstractController
                     'imageBase64' => $complaint->getPhoto()->getImageBase64()
                 );
                 $complaint_data['photo'] = $photo;
-                
+
             }else{
                 $complaint_data['photo'] = null;
             }
         }
         
         return new JsonResponse($complaint_data);
+    }
+
+    /**
+    * @Route("/complaints/pdf", name="api_complaints_pdf")
+    */
+    public function reportPdf()
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        
+        $complaints = $this->list(true);
+
+        $complaints = array('complaints'=>$complaints);
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('complaint/complaint.html.twig', $complaints);
+        
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("mypdf.pdf", [
+            "Attachment" => false
+        ]);
     }
 }
