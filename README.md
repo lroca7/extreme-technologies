@@ -18,7 +18,9 @@ symfony server:start
       The Web server is using PHP CLI 7.4.3                                                                             
       https://127.0.0.1:8000   
 
-Recursos del API en:
+4) Recursos del API en:
 
-https://localhost:8000/api
+   https://localhost:8000/api
+   
+
 
