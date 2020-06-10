@@ -3,12 +3,12 @@ Prueba - Desarrollador PHP
 
 1) Clonar repositorio 
 
-git clone https://github.com/lroca7/extreme-technologies
+   git clone https://github.com/lroca7/extreme-technologies
 
 2) Intall via composer
 
-cd extreme-technologes
-composer install
+   cd extreme-technologes
+   composer install
 
 3) Ejecutar servidor local
 
